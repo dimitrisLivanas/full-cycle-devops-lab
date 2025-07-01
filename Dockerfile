@@ -1,22 +1,37 @@
-# Stage 1: Start with a base image that has the Go language installed.
-# 'golang:1.22-alpine' is an official image that's small and efficient.
-FROM golang:1.24-alpine
+# --- Build Stage ---
+# Start with the Go image that contains the compiler and tools.
+# We give this stage a name, "builder", so we can reference it later.
+FROM golang:1.24-alpine AS builder
 
-# Set the working directory inside the container.
-# This is where our code will live.
+# Set the working directory for the build.
 WORKDIR /app
 
-# Copy all the local source code into the container's working directory.
+# Copy the module files first. This is a caching optimization.
+# If these files don't change, Docker won't re-download dependencies.
+COPY go.mod ./
+RUN go mod download
+
+# Copy the rest of the source code.
 COPY . .
 
-# Compile the Go application inside the container.
-# -o main specifies that the output executable should be named 'main'.
-RUN go build -o main .
+# Build the application, creating a statically linked binary.
+# This ensures it can run on its own without system dependencies.
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
-# This instruction tells Docker that the container will listen on port 8080 at runtime.
-# This is for documentation purposes.
+# --- Run Stage ---
+# Start from a new, extremely small base image.
+# 'alpine' is a minimal Linux distribution, perfect for running single binaries.
+FROM alpine:latest
+
+# Set the working directory for the final container.
+WORKDIR /root/
+
+# Copy *only* the compiled binary from the "builder" stage.
+# This is the magic of multi-stage builds.
+COPY --from=builder /app/main .
+
+# Expose port 8080 for incoming traffic.
 EXPOSE 8080
 
-# This is the command that will be run when the container starts.
-# It executes our compiled program.
+# The command to run the application when the container starts.
 CMD ["./main"]
