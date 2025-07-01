@@ -1,0 +1,7 @@
+# Ignore version control and docker files
+.git
+.gitignore
+.dockerignore
+
+# Ignore documentation
+README.md
