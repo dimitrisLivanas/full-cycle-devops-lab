@@ -1,20 +1,42 @@
 # DevOps Learning Journey - Full Cycle Project
 
-## Progress Report: Step 1 Completion
+This repository documents my hands-on learning journey through a series of DevOps tasks, from building a simple web server to deploying and monitoring it in a cloud environment.
 
-**Objective:** The initial task was to build a foundational, standalone HTTP server. This serves as the core application that will be used throughout the subsequent DevOps exercises involving containerization, deployment, and monitoring.
+---
+## Step 1: Building a Go HTTP Server
 
-**Technology Selection:**
-* The **Go (Golang)** programming language was selected for this task.
-* **Reasoning:** Go was chosen strategically due to its strong prevalence in the DevOps ecosystem, its ability to compile to a single, dependency-free binary, and its high performance—all of which are highly desirable for creating efficient, portable microservices.
+**Objective:** Create a foundational, standalone HTTP server to serve as the core application for this project.
 
-**Key Concepts Learned & Implemented:**
+* **Technology:** Go (Golang)
+* **Key Concepts:**
+    * **HTTP Server Fundamentals:** Understood the role of an HTTP server that listens for requests and sends responses.
+    * **Go `net/http`:** Used Go's standard library to build a web server without external dependencies.
+    * **Client-Server Interaction:** Tested the server using both a web browser and `curl`, observing the different types of requests they generate (e.g., for `/favicon.ico`).
 
-1.  **HTTP Server Fundamentals:** Learned what an HTTP server is at its core: a program that listens on a specific network port for incoming requests and sends back responses.
-2.  **Go `net/http` Standard Library:** Successfully built the server using Go's powerful `net/http` package, demonstrating the ability to create a functional web service without requiring any external frameworks or dependencies.
-3.  **Request Handling & Routing:** Implemented a basic request handler using `http.HandleFunc` to route incoming requests to specific Go functions.
-4.  **Client-Server Interaction:** Tested the running server using two different types of HTTP clients: a graphical web browser (Chrome) and a command-line tool (`curl`).
-5.  **Analyzing Client Behavior:** By logging request details, I observed that browsers are "chatty" clients that automatically request additional resources (`/favicon.ico`), unlike simple clients like `curl`.
+---
+## Step 2: Containerization with Docker
 
-**Outcome:**
-A simple but robust "Hello, World" HTTP server has been successfully built and tested locally. The project is now stored on GitHub and ready for the next stage: **containerization with Docker**.
+**Objective:** Package the Go application and its dependencies into a portable Docker container, solving the "it works on my machine" problem.
+
+* **Technology:** Docker
+* **Key Concepts:**
+    * **Containerization:** Learned the core concept of creating a lightweight, executable package containing everything needed to run the application.
+    * **Dockerfile:** Authored a `Dockerfile` using instructions like `FROM`, `WORKDIR`, `COPY`, `RUN`, and `CMD` to create a repeatable and isolated build process.
+    * **Go Modules:** Understood the necessity of `go.mod` for modern Go projects, which was required for the Docker build to succeed.
+    * **Build Optimization:** Added a `.dockerignore` file to keep the Docker build context small and efficient by excluding unnecessary files.
+
+---
+## Step 3: Orchestration with Docker Compose
+
+**Objective:** Simplify the management and definition of the application service for local development.
+
+* **Technology:** Docker Compose
+* **Key Concepts:**
+    * **Declarative Configuration:** Used a `docker-compose.yml` file to declaratively define the application's services, builds, and port mappings.
+    * **Service Management:** Replaced long `docker run` commands with simple `docker compose up` and `docker compose down` commands to easily manage the application's lifecycle.
+    * **Modern CLI:** Adapted to the new `docker compose` (with a space) syntax, which is integrated directly into the Docker CLI.
+
+---
+### **Next Steps:**
+
+The next stage is to improve the Docker build process with a multi-stage build before moving on to infrastructure and cloud deployment.
