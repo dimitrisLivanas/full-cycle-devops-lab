@@ -1,6 +1,6 @@
 # Stage 1: Start with a base image that has the Go language installed.
 # 'golang:1.22-alpine' is an official image that's small and efficient.
-FROM golang:1.22-alpine
+FROM golang:1.24-alpine
 
 # Set the working directory inside the container.
 # This is where our code will live.
