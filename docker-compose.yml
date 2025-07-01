@@ -1,0 +1,17 @@
+# Specifies the version of the Docker Compose file format. '3.8' is a recent, stable version.
+version: '3.8'
+
+# This is the main section where we define our application's services (containers).
+services:
+  # 'app' is the custom name we're giving our service.
+  app:
+    # This tells Compose to build an image from the Dockerfile in the current directory ('.').
+    build: .
+    # This is equivalent to the '-t' flag in 'docker build' and names the image.
+    image: full-cycle-devops-lab
+    # This gives the running container a predictable, friendly name.
+    container_name: full-cycle-devops-lab-app
+    # This maps port 8080 on your machine (host) to port 8080 inside the container.
+    # It's the same as the '-p 8080:8080' flag in 'docker run'.
+    ports:
+      - "8080:8080"
