@@ -1,2 +1,8 @@
 # Ignore the compiled Go library
 full-cycle-devops-lab
+
+# Terraform local state and plugins
+**/.terraform
+**/.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
