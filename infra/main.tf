@@ -1,14 +1,24 @@
-# This block tells Terraform we want to manage resources in Google Cloud.
+# Configure the Google Cloud provider
 provider "google" {
-  project = "sturdy-layout-459008-n3"
-  region  = "europe-west1"
+  project = "sturdy-layout-459008-n3" # <-- REPLACE THIS if you haven't already
+  region  = "europe-west8"               # Milan, Italy
 }
 
-# This block defines a resource we want to create.
-# In this case, a Google Cloud Storage bucket.
-resource "google_storage_bucket" "my_learning_bucket" {
-  # The name must be globally unique across all of Google Cloud.
-  name          = "full-cycle-devops-lab-bucket-dimitris" # <-- REPLACE THIS with a unique name
-  location      = "EU"      # The location for the bucket's data.
-  force_destroy = true    # Allows Terraform to delete the bucket even if it has files in it. Good for labs.
+# This resource enables the Kubernetes Engine API for our project.
+resource "google_project_service" "kubernetes_api" {
+  project = "sturdy-layout-459008-n3" # <-- Make sure this is correct
+  service = "container.googleapis.com"
+
+  # This prevents Terraform from trying to disable the API when you run 'destroy'.
+  disable_on_destroy = false
+}
+
+# Define a GKE Autopilot cluster resource
+resource "google_container_cluster" "primary" {
+  # This tells Terraform to wait until the API is enabled before trying to create the cluster.
+  depends_on = [google_project_service.kubernetes_api]
+
+  name              = "full-cycle-devops-lab-cluster"
+  location          = "europe-west8"
+  enable_autopilot  = true
 }
