@@ -1,0 +1,36 @@
+# k8s-deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-go-deployment
+spec:
+  replicas: 2 # Run 2 pods of our application
+  selector:
+    matchLabels:
+      app: hello-go
+  template:
+    metadata:
+      labels:
+        app: hello-go
+    spec:
+      containers:
+      - name: hello-go-container
+        # IMPORTANT: Replace this with the path to your image
+        # For now, we'll use a public image I've prepared.
+        image: gcr.io/google-samples/hello-app:1.0
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-go-service
+spec:
+  selector:
+    app: hello-go
+  # This makes the service available on a public IP address
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 80 # The port the service will be exposed on
+    targetPort: 8080 # The port on the pod to forward traffic to
