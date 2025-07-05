@@ -21,4 +21,5 @@ resource "google_container_cluster" "primary" {
   name              = "full-cycle-devops-lab-cluster"
   location          = "europe-west8"
   enable_autopilot  = true
+  deletion_protection = false
 }
