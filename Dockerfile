@@ -9,6 +9,7 @@ WORKDIR /app
 # Copy the module files first. This is a caching optimization.
 # If these files don't change, Docker won't re-download dependencies.
 COPY go.mod ./
+COPY go.sum ./
 RUN go mod download
 
 # Copy the rest of the source code.

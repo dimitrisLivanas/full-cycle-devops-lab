@@ -5,69 +5,74 @@ This repository documents my hands-on learning journey through a series of DevOp
 ---
 ## Step 1: Building a Go HTTP Server
 
-**Objective:** Create a foundational, standalone HTTP server to serve as the core application for this project.
-
+**Objective:** Create a foundational, standalone HTTP server.
 * **Technology:** Go (Golang)
-* **Key Concepts:**
-    * **HTTP Server Fundamentals:** Understood the role of an HTTP server that listens for requests and sends responses.
-    * **Go `net/http`:** Used Go's standard library to build a web server without external dependencies.
-    * **Client-Server Interaction:** Tested the server using both a web browser and `curl`.
+* **Key Concepts:** `net/http` standard library, request handlers, and testing with `curl`.
 
 ---
 ## Step 2: Containerization with Docker
 
-**Objective:** Package the Go application and its dependencies into a portable Docker container.
-
+**Objective:** Package the Go application into a portable Docker container.
 * **Technology:** Docker
-* **Key Concepts:**
-    * **Containerization:** Learned the core concept of creating a lightweight, executable package containing everything needed to run the application, solving the "it works on my machine" problem.
-    * **Dockerfile:** Authored an initial `Dockerfile` using instructions like `FROM`, `WORKDIR`, `COPY`, `RUN`, and `CMD`.
+* **Key Concepts:** `Dockerfile` basics (`FROM`, `RUN`, `CMD`), `.dockerignore`.
 
 ---
 ## Step 3: Orchestration with Docker Compose
 
-**Objective:** Simplify the management and definition of the application service for local development.
-
+**Objective:** Simplify the management of the application service for local development.
 * **Technology:** Docker Compose
-* **Key Concepts:**
-    * **Declarative Configuration:** Used a `docker-compose.yml` file to define the application's services, builds, and port mappings.
-    * **Service Management:** Replaced long `docker run` commands with simple `docker compose up` and `docker compose down` commands.
+* **Key Concepts:** `docker-compose.yml`, defining services, `docker compose up/down`.
 
 ---
 ## Step 4: Optimizing with Multi-Stage Docker Builds
 
 **Objective:** Drastically reduce the final image size for better security and efficiency.
-
 * **Technology:** Docker
-* **Key Concepts:**
-    * **Multi-Stage Builds:** Used multiple `FROM` statements to separate the build environment (with the Go compiler) from the final runtime environment.
-    * **Artifact Copying:** Copied only the compiled binary from the build stage to the final stage using `COPY --from=builder`.
-    * **Layer Caching:** Optimized the Dockerfile order (`COPY go.mod` before `COPY . .`) to leverage Docker's layer cache for faster rebuilds.
+* **Key Concepts:** Multi-stage builds (`FROM ... AS builder`), copying artifacts between stages.
 
 ---
 ## Step 5: Intro to IaC with Terraform
 
 **Objective:** Learn the fundamentals of Infrastructure as Code (IaC) by managing a simple cloud resource.
-
 * **Technology:** Terraform
-* **Key Concepts:**
-    * **IaC Principles:** Managed infrastructure with code for automation, repeatability, and version control.
-    * **Declarative Syntax:** Used HCL to define the desired state of a Google Cloud Storage bucket.
-    * **Core Workflow:** Learned the `terraform init`, `plan`, `apply`, and `destroy` workflow.
-    * **State Management:** Understood that Terraform creates a state file to keep track of managed resources and that it should be ignored in version control for local projects.
+* **Key Concepts:** IaC principles, declarative syntax (HCL), the `init`/`plan`/`apply`/`destroy` workflow.
 
 ---
 ## Step 6: Provisioning a Kubernetes Cluster
 
 **Objective:** Provision a production-grade Kubernetes cluster in the cloud using Terraform.
-
 * **Technologies:** Terraform, Google Kubernetes Engine (GKE)
-* **Key Concepts:**
-    * **GKE Autopilot:** Provisioned a serverless Kubernetes cluster where Google manages the underlying nodes.
-    * **`kubectl`:** Configured the standard Kubernetes CLI to connect to the new GKE cluster.
-    * **Cloud API Management:** Learned to enable cloud service APIs as part of the Terraform code using the `google_project_service` resource.
+* **Key Concepts:** GKE Autopilot, configuring `kubectl`, managing cloud APIs as code.
+
+---
+## Step 7: Deploying an App to Kubernetes
+
+**Objective:** Deploy a containerized application to the GKE cluster.
+* **Technology:** Kubernetes
+* **Key Concepts:** Kubernetes manifests (YAML), `Deployment` and `Service` objects, `type: LoadBalancer`.
+
+---
+## Step 8: Infrastructure Cleanup
+
+**Objective:** Learn to properly tear down cloud infrastructure to manage costs.
+* **Technology:** Terraform
+* **Key Concepts:** `terraform destroy`, `deletion_protection` as a safety feature.
+
+---
+## Step 9: Deploying a Local Monitoring Stack
+
+**Objective:** Run a local observability backend to receive telemetry data.
+* **Technologies:** Docker Compose, Jaeger
+* **Key Concepts:** The role of an observability backend, using Docker Compose for local infrastructure, debugging container startup issues (`ps`, `logs`), and resolving Docker port permissions.
+
+---
+## Step 10: Instrumenting an Application with OpenTelemetry
+
+**Objective:** Modify the Go application to generate and export traces to the monitoring backend.
+* **Technology:** Go, OpenTelemetry
+* **Key Concepts:** Application **instrumentation**, using OpenTelemetry SDKs, configuring an **exporter** (OTLP), and understanding Docker container networking (`localhost` vs. service name).
 
 ---
 ### **Next Steps:**
 
-Deploy the containerized application to the new Kubernetes cluster.
+Deploy the fully instrumented application to Kubernetes and integrate it with Google Cloud's native monitoring services.

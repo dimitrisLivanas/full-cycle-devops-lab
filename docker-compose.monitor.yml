@@ -1,0 +1,15 @@
+services:
+  uptrace:
+    image: uptrace/uptrace:1.6.0
+    container_name: uptrace
+    environment:
+      # This DSN is for local testing and tells Uptrace where to store data inside the container.
+      - UPTRACE_DSN=http://project1-token@localhost:14317/1
+    ports:
+      - "5001:8080"      # Uptrace UI
+      - "14317:14317"    # OTLP gRPC port
+    volumes:
+      - uptrace-data:/var/lib/uptrace
+
+volumes:
+  uptrace-data:
