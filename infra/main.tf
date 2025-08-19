@@ -1,12 +1,12 @@
 # Configure the Google Cloud provider
 provider "google" {
-  project = "sturdy-layout-459008-n3" # <-- REPLACE THIS if you haven't already
+  project = "sturdy-layout-459008-n3" 
   region  = "europe-west8"               # Milan, Italy
 }
 
 # This resource enables the Kubernetes Engine API for our project.
 resource "google_project_service" "kubernetes_api" {
-  project = "sturdy-layout-459008-n3" # <-- Make sure this is correct
+  project = "sturdy-layout-459008-n3" 
   service = "container.googleapis.com"
 
   # This prevents Terraform from trying to disable the API when you run 'destroy'.
