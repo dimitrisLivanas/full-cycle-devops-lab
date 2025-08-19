@@ -15,8 +15,6 @@ spec:
     spec:
       containers:
       - name: hello-go-container
-        # IMPORTANT: Replace this with the path to your image
-        # For now, we'll use a public image I've prepared.
         image: gcr.io/google-samples/hello-app:1.0
         ports:
         - containerPort: 8080
